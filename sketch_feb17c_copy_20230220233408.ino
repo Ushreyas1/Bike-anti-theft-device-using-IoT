@@ -2,10 +2,11 @@
 int vibsensorPin=D1;
 int ledPin=D6;
 int buzzerpin=D0;
+int i=0;
 
 const char* ssid = "Shreyas";
 const char* password = "1234567890";
-boolean bite = false;
+boolean theft = false;
 
 WiFiServer server(80);
 
@@ -45,9 +46,9 @@ void loop() {
   long Alarm = pulseIn(vibsensorPin, HIGH); 
   if (Alarm > 100) 
   {
-    theaft = true;
+    theft = true;
     Serial.println(Alarm);
-    Serial.println(theaft);
+    Serial.println(theft);
   }
  
    
@@ -79,23 +80,29 @@ void loop() {
     client.stop();
     return;
   }
-
-  // Set GPIO according to the request
+  
+int vib = digitalRead(vibsensorPin);
+  if(vib == HIGH)
+  {
+    for(i=0;i<10;i++)
+    {
   digitalWrite(ledPin, HIGH);
   digitalWrite(buzzerpin, HIGH);
+  delay(1000);
 
   digitalWrite(ledPin, LOW);
   digitalWrite(buzzerpin, LOW);
   delay(1000);
-  
+  }
+  }
   client.flush();
 
   // Prepare the response
   String s = "HTTP/1.1 200 OK\r\n Content-Type: text/html\r\n\r\n<!DOCTYPE HTML>\r\n";
-  if (theaft == true)
+  if (theft == true)
    {
-    s += "!!!BITE!!!";
-    theaft= false;
+    s += "!!!THEFT!!!";
+    theft= false;
    }
 
   else
